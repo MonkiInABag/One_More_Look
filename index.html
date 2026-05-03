@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>One More Look | Preloved Fashion</title>
+    <meta
+      name="description"
+      content="One More Look sells handpicked preloved clothing, giving every piece one more look."
+    />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="One More Look home">
+        <span class="brand-mark">oml</span>
+        <span>
+          <strong>One More Look</strong>
+          <small>Preloved Fashion</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#shop">Shop</a>
+        <a href="#new">New Drops</a>
+        <a href="#about">About</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="basket-button" id="basketOpen" type="button" aria-label="Open basket">
+          Basket
+          <span id="basketCount">0</span>
+        </button>
+        <button class="icon-button" id="employeeOpen" type="button" aria-label="Employee login">
+          <span aria-hidden="true">+</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <img
+            src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1200&q=80"
+            alt=""
+          />
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">Handpicked preloved clothing</p>
+          <h1 id="hero-title">One More Look</h1>
+          <p id="heroText">
+            Giving quality clothes a second look with curated drops, honest condition notes, and
+            affordable finds.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#shop">Shop the drop</a>
+            <a class="button secondary" href="#about">Our story</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-band" aria-label="Shop highlights">
+        <div>
+          <strong id="stockCount">0</strong>
+          <span>pieces live</span>
+        </div>
+        <div>
+          <strong>Daily</strong>
+          <span>new drops</span>
+        </div>
+        <div>
+          <strong>One more</strong>
+          <span>look, less waste</span>
+        </div>
+      </section>
+
+      <section class="section" id="shop" aria-labelledby="shop-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Browse stock</p>
+            <h2 id="shop-title">Current Collection</h2>
+          </div>
+          <div class="filters" aria-label="Product filters">
+            <button class="filter active" type="button" data-filter="all">All</button>
+            <button class="filter" type="button" data-filter="tops">Tops</button>
+            <button class="filter" type="button" data-filter="outerwear">Outerwear</button>
+            <button class="filter" type="button" data-filter="bottoms">Bottoms</button>
+            <button class="filter" type="button" data-filter="accessories">Accessories</button>
+          </div>
+        </div>
+        <div class="product-grid" id="productGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="section checkout-section" id="checkout" aria-labelledby="checkout-title">
+        <div>
+          <p class="eyebrow">Secure checkout</p>
+          <h2 id="checkout-title">Checkout</h2>
+          <p>
+            Fill in your details and review the order. Payment buttons can be connected here later
+            with Stripe, PayPal, or another provider.
+          </p>
+        </div>
+
+        <div class="checkout-layout">
+          <form class="checkout-form" id="checkoutForm">
+            <label>
+              Full name
+              <input type="text" id="customerName" required />
+            </label>
+            <label>
+              Email
+              <input type="email" id="customerEmail" required />
+            </label>
+            <label>
+              Phone
+              <input type="tel" id="customerPhone" />
+            </label>
+            <label>
+              Postcode
+              <input type="text" id="customerPostcode" required />
+            </label>
+            <label class="full">
+              Delivery address
+              <textarea id="customerAddress" required></textarea>
+            </label>
+            <label class="full">
+              Delivery notes
+              <textarea id="customerNotes" placeholder="Optional"></textarea>
+            </label>
+            <button class="button primary full" type="submit">Place order request</button>
+            <p class="form-note full" id="checkoutMessage"></p>
+          </form>
+
+          <aside class="order-summary" aria-label="Order summary">
+            <h3>Order summary</h3>
+            <div id="checkoutItems"></div>
+            <div class="summary-line">
+              <span>Items</span>
+              <strong id="checkoutSubtotal">GBP 0</strong>
+            </div>
+            <div class="summary-line">
+              <span>Delivery</span>
+              <strong id="checkoutDelivery">To confirm</strong>
+            </div>
+            <div class="payment-placeholder">
+              <strong>Payment connection</strong>
+              <span>Stripe, PayPal, or bank payment can be linked here later.</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="new-drop" id="new" aria-labelledby="new-title">
+        <div>
+          <p class="eyebrow">Fresh finds</p>
+          <h2 id="new-title">New drops without the fast-fashion rush</h2>
+        </div>
+        <p>
+          Each item is checked, photographed, and listed with clear sizing and condition notes so
+          customers can buy with confidence.
+        </p>
+      </section>
+
+      <section class="section about" id="about" aria-labelledby="about-title">
+        <div>
+          <p class="eyebrow">About us</p>
+          <h2 id="about-title">A small shop for clothes worth another wear</h2>
+        </div>
+        <p id="aboutText">
+          One More Look is built around simple, careful resale: handpicked pieces, regular drops,
+          and styling that makes preloved clothing feel exciting again.
+        </p>
+        <div class="social-links">
+          <a href="https://linktr.ee/onemorelook" target="_blank" rel="noreferrer">Linktree</a>
+          <a href="#" id="vintedLink">Vinted</a>
+          <a href="#" id="ebayLink">eBay</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>One More Look</span>
+      <span>Preloved fashion, styled for another story.</span>
+    </footer>
+
+    <dialog class="employee-panel" id="employeePanel">
+      <div class="panel-top">
+        <div>
+          <p class="eyebrow">Employee area</p>
+          <h2 id="panelTitle">Login</h2>
+        </div>
+        <button class="icon-button" id="employeeClose" type="button" aria-label="Close employee panel">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+
+      <form class="login-form" id="loginForm">
+        <label>
+          Email
+          <input type="email" id="employeeEmail" value="employee@onemorelook.co.uk" required />
+        </label>
+        <label>
+          Password
+          <input type="password" id="employeePassword" placeholder="Try: onemorelook" required />
+        </label>
+        <button class="button primary" type="submit">Log in</button>
+        <p class="form-note" id="loginMessage">Demo password: <strong>onemorelook</strong></p>
+      </form>
+
+      <div class="admin-area hidden" id="adminArea">
+        <div class="admin-toolbar">
+          <button class="tab active" type="button" data-tab="stock">Stock</button>
+          <button class="tab" type="button" data-tab="layout">Layout</button>
+          <button class="tab" type="button" data-tab="links">Links</button>
+        </div>
+
+        <section class="admin-tab" id="stockTab">
+          <form class="stock-form" id="stockForm">
+            <input type="hidden" id="itemId" />
+            <label>
+              Item name
+              <input type="text" id="itemName" placeholder="Vintage denim jacket" required />
+            </label>
+            <label>
+              Category
+              <select id="itemCategory">
+                <option value="tops">Tops</option>
+                <option value="outerwear">Outerwear</option>
+                <option value="bottoms">Bottoms</option>
+                <option value="accessories">Accessories</option>
+              </select>
+            </label>
+            <label>
+              Price
+              <input type="number" id="itemPrice" min="1" step="1" placeholder="28" required />
+            </label>
+            <label>
+              Size
+              <input type="text" id="itemSize" placeholder="UK 10 / M" required />
+            </label>
+            <label class="full">
+              Image URL
+              <input type="url" id="itemImage" placeholder="https://..." required />
+            </label>
+            <label class="full">
+              Notes
+              <textarea id="itemNotes" placeholder="Condition, fit, fabric, styling note" required></textarea>
+            </label>
+            <div class="form-actions full">
+              <button class="button primary" type="submit">Save item</button>
+              <button class="button secondary" id="clearForm" type="button">Clear</button>
+            </div>
+          </form>
+          <div class="stock-list" id="stockList"></div>
+        </section>
+
+        <section class="admin-tab hidden" id="layoutTab">
+          <form class="settings-form" id="settingsForm">
+            <label>
+              Hero message
+              <textarea id="settingHero"></textarea>
+            </label>
+            <label>
+              About message
+              <textarea id="settingAbout"></textarea>
+            </label>
+            <label>
+              Accent colour
+              <input type="color" id="settingAccent" value="#a95f55" />
+            </label>
+            <button class="button primary" type="submit">Update website</button>
+          </form>
+        </section>
+
+        <section class="admin-tab hidden" id="linksTab">
+          <form class="settings-form" id="linksForm">
+            <label>
+              Vinted link
+              <input type="url" id="settingVinted" placeholder="https://www.vinted.co.uk/..." />
+            </label>
+            <label>
+              eBay link
+              <input type="url" id="settingEbay" placeholder="https://www.ebay.co.uk/..." />
+            </label>
+            <button class="button primary" type="submit">Save links</button>
+          </form>
+        </section>
+
+        <button class="button danger" id="logoutButton" type="button">Log out</button>
+      </div>
+    </dialog>
+
+    <dialog class="basket-panel" id="basketPanel">
+      <div class="panel-top">
+        <div>
+          <p class="eyebrow">Your basket</p>
+          <h2>Ready to buy</h2>
+        </div>
+        <button class="icon-button" id="basketClose" type="button" aria-label="Close basket">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="basket-list" id="basketList"></div>
+      <div class="basket-footer">
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <strong id="basketSubtotal">GBP 0</strong>
+        </div>
+        <a class="button primary" id="checkoutLink" href="#checkout">Go to checkout</a>
+        <button class="button secondary" id="clearBasket" type="button">Clear basket</button>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>

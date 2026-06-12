@@ -18,7 +18,7 @@
   </head>
   <body>
     <header class="site-header">
-      <nav class="main-nav" aria-label="Main navigation">
+      <nav class="main-nav" id="siteNav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="#shop">Shop</a>
         <a href="#new-in">New In</a>
@@ -28,6 +28,9 @@
       </nav>
 
       <div class="header-actions">
+        <button class="menu-button" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav">
+          Menu
+        </button>
         <button class="basket-button" id="basketOpen" type="button" aria-label="Open basket">
           <span class="bag-icon" aria-hidden="true">Bag</span>
           <span id="basketCount">0</span>
@@ -247,7 +250,7 @@
             </label>
             <label class="full">
               Image URL
-              <input type="url" id="itemImage" placeholder="https://..." required />
+              <input type="text" id="itemImage" placeholder="https://... or uploaded image data" required />
             </label>
             <div class="upload-dropzone full" id="imageDropzone">
               <input type="file" id="itemImageFile" accept="image/*" />
@@ -257,6 +260,19 @@
               </div>
               <img class="upload-preview hidden" id="imagePreview" alt="Selected item preview" />
             </div>
+            <label class="full">
+              Extra image URLs
+              <textarea id="itemExtraImages" placeholder="Add one extra image URL per line"></textarea>
+            </label>
+            <div class="upload-dropzone full" id="galleryDropzone">
+              <input type="file" id="itemGalleryFiles" accept="image/*" multiple />
+              <div>
+                <strong>Add more photos</strong>
+                <span>Choose multiple photos, or drag and drop them here.</span>
+              </div>
+            </div>
+            <div class="gallery-preview full" id="galleryPreview"></div>
+            <article class="admin-product-preview full" id="itemAdPreview"></article>
             <label class="full">
               Notes
               <textarea id="itemNotes" placeholder="Condition, fit, fabric, styling note" required></textarea>

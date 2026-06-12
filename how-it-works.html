@@ -14,7 +14,7 @@
   </head>
   <body>
     <header class="site-header">
-      <nav class="main-nav" aria-label="Main navigation">
+      <nav class="main-nav" id="siteNav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="index.html#shop">Shop</a>
         <a href="index.html#new-in">New In</a>
@@ -23,6 +23,9 @@
         <a href="contact.html">Contact</a>
       </nav>
       <div class="header-actions">
+        <button class="menu-button" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav">
+          Menu
+        </button>
         <button class="basket-button" id="basketOpen" type="button" aria-label="Open basket">
           <span class="bag-icon" aria-hidden="true">Bag</span>
           <span id="basketCount">0</span>

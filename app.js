@@ -101,8 +101,17 @@ const itemImageInput = document.querySelector("#itemImage");
 const imageDropzone = document.querySelector("#imageDropzone");
 const itemImageFile = document.querySelector("#itemImageFile");
 const imagePreview = document.querySelector("#imagePreview");
+const itemExtraImages = document.querySelector("#itemExtraImages");
+const galleryDropzone = document.querySelector("#galleryDropzone");
+const itemGalleryFiles = document.querySelector("#itemGalleryFiles");
+const galleryPreview = document.querySelector("#galleryPreview");
+const itemAdPreview = document.querySelector("#itemAdPreview");
+const productDetail = document.querySelector("#productDetail");
+const menuToggle = document.querySelector("#menuToggle");
+const siteNav = document.querySelector("#siteNav");
 
 let activeFilter = "all";
+let uploadedGalleryImages = [];
 
 function pounds(value) {
   return new Intl.NumberFormat("en-GB", {
@@ -132,6 +141,10 @@ function getBasketProducts() {
     .filter(Boolean);
 }
 
+function productImages(item) {
+  return [item.image, ...(item.images || [])].filter(Boolean);
+}
+
 function basketTotal() {
   return getBasketProducts().reduce((total, item) => total + Number(item.price), 0);
 }
@@ -159,16 +172,20 @@ function renderProducts() {
         const inBasket = basketIds.includes(item.id);
         return `
         <article class="product-card">
-          <figure>
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy">
-          </figure>
-          <div class="product-body">
-            <div class="product-line">
-              <h3>${escapeHtml(item.name)}</h3>
-              <span class="price">${pounds(item.price)}</span>
+          <a class="product-link" href="product.html?id=${encodeURIComponent(item.id)}">
+            <figure>
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy">
+            </figure>
+            <div class="product-body">
+              <div class="product-line">
+                <h3>${escapeHtml(item.name)}</h3>
+                <span class="price">${pounds(item.price)}</span>
+              </div>
+              <span class="pill">${escapeHtml(item.size)}</span>
+              <p>${escapeHtml(item.notes)}</p>
             </div>
-            <span class="pill">${escapeHtml(item.size)}</span>
-            <p>${escapeHtml(item.notes)}</p>
+          </a>
+          <div class="product-body product-action-row">
             <button class="button primary" type="button" data-add-basket="${escapeHtml(item.id)}" ${
               inBasket ? "disabled" : ""
             }>
@@ -180,6 +197,48 @@ function renderProducts() {
       },
     )
     .join("");
+}
+
+function renderProductDetail() {
+  if (!productDetail) {
+    return;
+  }
+
+  const id = new URLSearchParams(window.location.search).get("id");
+  const item = store.products.find((product) => product.id === id);
+
+  if (!item) {
+    productDetail.innerHTML = `
+      <div class="empty-state">
+        This item could not be found. <a href="index.html#shop">Back to shop</a>
+      </div>
+    `;
+    return;
+  }
+
+  const images = productImages(item);
+  productDetail.innerHTML = `
+    <div class="product-gallery">
+      ${images
+        .map(
+          (src, index) => `
+            <img src="${escapeHtml(src)}" alt="${escapeHtml(item.name)} photo ${index + 1}">
+          `,
+        )
+        .join("")}
+    </div>
+    <div class="product-detail-copy">
+      <p class="eyebrow">${escapeHtml(item.category)}</p>
+      <h1>${escapeHtml(item.name)}</h1>
+      <p class="detail-price">${pounds(item.price)}</p>
+      <span class="pill">${escapeHtml(item.size)}</span>
+      <p>${escapeHtml(item.notes)}</p>
+      <button class="button primary" type="button" data-detail-add="${escapeHtml(item.id)}">
+        ${store.basket.includes(item.id) ? "In basket" : "Add to basket"}
+      </button>
+      <a class="text-link" href="index.html#shop">Back to collection</a>
+    </div>
+  `;
 }
 
 function renderBasket() {
@@ -326,7 +385,10 @@ function resetStockForm() {
 
   stockForm.reset();
   document.querySelector("#itemId").value = "";
+  uploadedGalleryImages = [];
   updateImagePreview("");
+  updateGalleryPreview();
+  renderAdminPreview();
 }
 
 function fillStockForm(item) {
@@ -336,8 +398,12 @@ function fillStockForm(item) {
   document.querySelector("#itemPrice").value = item.price;
   document.querySelector("#itemSize").value = item.size;
   document.querySelector("#itemImage").value = item.image;
+  document.querySelector("#itemExtraImages").value = (item.images || []).join("\n");
   document.querySelector("#itemNotes").value = item.notes;
+  uploadedGalleryImages = [];
   updateImagePreview(item.image);
+  updateGalleryPreview();
+  renderAdminPreview();
 }
 
 function updateImagePreview(src) {
@@ -355,6 +421,58 @@ function updateImagePreview(src) {
   imagePreview.classList.remove("hidden");
 }
 
+function updateGalleryPreview() {
+  if (!galleryPreview) {
+    return;
+  }
+
+  const urls = getExtraImageUrls();
+  const allImages = [...urls, ...uploadedGalleryImages];
+
+  if (allImages.length === 0) {
+    galleryPreview.innerHTML = "";
+    return;
+  }
+
+  galleryPreview.innerHTML = allImages
+    .map((src) => `<img src="${escapeHtml(src)}" alt="Extra item preview">`)
+    .join("");
+}
+
+function getExtraImageUrls() {
+  return (itemExtraImages?.value || "")
+    .split(/\r?\n/)
+    .map((url) => url.trim())
+    .filter(Boolean);
+}
+
+function renderAdminPreview() {
+  if (!itemAdPreview) {
+    return;
+  }
+
+  const name = document.querySelector("#itemName")?.value.trim() || "Item preview";
+  const price = Number(document.querySelector("#itemPrice")?.value || 0);
+  const size = document.querySelector("#itemSize")?.value.trim() || "Size";
+  const notes = document.querySelector("#itemNotes")?.value.trim() || "Condition and item notes will preview here.";
+  const image = itemImageInput?.value.trim();
+
+  itemAdPreview.innerHTML = `
+    <p class="eyebrow">Listing preview</p>
+    <div class="preview-card">
+      ${image ? `<img src="${escapeHtml(image)}" alt="">` : `<div class="preview-placeholder">No image yet</div>`}
+      <div>
+        <div class="product-line">
+          <h3>${escapeHtml(name)}</h3>
+          <span class="price">${price ? pounds(price) : "GBP 0"}</span>
+        </div>
+        <span class="pill">${escapeHtml(size)}</span>
+        <p>${escapeHtml(notes)}</p>
+      </div>
+    </div>
+  `;
+}
+
 function useImageFile(file) {
   if (!file || !file.type.startsWith("image/") || !itemImageInput) {
     return;
@@ -364,8 +482,20 @@ function useImageFile(file) {
   reader.addEventListener("load", () => {
     itemImageInput.value = reader.result;
     updateImagePreview(reader.result);
+    renderAdminPreview();
   });
   reader.readAsDataURL(file);
+}
+
+function useGalleryFiles(files) {
+  [...files].filter((file) => file.type.startsWith("image/")).forEach((file) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      uploadedGalleryImages.push(reader.result);
+      updateGalleryPreview();
+    });
+    reader.readAsDataURL(file);
+  });
 }
 
 document.querySelector("#employeeOpen")?.addEventListener("click", () => {
@@ -380,6 +510,11 @@ document.querySelector("#employeeClose")?.addEventListener("click", () => {
 document.querySelector("#basketOpen")?.addEventListener("click", () => {
   renderBasket();
   basketPanel.showModal();
+});
+
+menuToggle?.addEventListener("click", () => {
+  const isOpen = siteNav.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
 });
 
 document.querySelector("#basketClose")?.addEventListener("click", () => {
@@ -431,6 +566,14 @@ productGrid?.addEventListener("click", (event) => {
   }
 });
 
+productDetail?.addEventListener("click", (event) => {
+  const itemId = event.target.dataset.detailAdd;
+  if (itemId) {
+    addToBasket(itemId);
+    renderProductDetail();
+  }
+});
+
 basketList?.addEventListener("click", (event) => {
   const itemId = event.target.dataset.removeBasket;
   if (itemId) {
@@ -458,6 +601,7 @@ stockForm?.addEventListener("submit", (event) => {
     price: Number(document.querySelector("#itemPrice").value),
     size: document.querySelector("#itemSize").value.trim(),
     image: document.querySelector("#itemImage").value.trim(),
+    images: [...getExtraImageUrls(), ...uploadedGalleryImages],
     notes: document.querySelector("#itemNotes").value.trim(),
   };
 
@@ -496,11 +640,18 @@ document.querySelector("#clearForm")?.addEventListener("click", resetStockForm);
 
 itemImageInput?.addEventListener("input", () => {
   updateImagePreview(itemImageInput.value.trim());
+  renderAdminPreview();
 });
 
 itemImageFile?.addEventListener("change", () => {
   useImageFile(itemImageFile.files[0]);
 });
+
+itemExtraImages?.addEventListener("input", () => {
+  updateGalleryPreview();
+});
+
+stockForm?.addEventListener("input", renderAdminPreview);
 
 imageDropzone?.addEventListener("dragover", (event) => {
   event.preventDefault();
@@ -515,6 +666,25 @@ imageDropzone?.addEventListener("drop", (event) => {
   event.preventDefault();
   imageDropzone.classList.remove("drag-over");
   useImageFile(event.dataTransfer.files[0]);
+});
+
+itemGalleryFiles?.addEventListener("change", () => {
+  useGalleryFiles(itemGalleryFiles.files);
+});
+
+galleryDropzone?.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  galleryDropzone.classList.add("drag-over");
+});
+
+galleryDropzone?.addEventListener("dragleave", () => {
+  galleryDropzone.classList.remove("drag-over");
+});
+
+galleryDropzone?.addEventListener("drop", (event) => {
+  event.preventDefault();
+  galleryDropzone.classList.remove("drag-over");
+  useGalleryFiles(event.dataTransfer.files);
 });
 
 settingsForm?.addEventListener("submit", (event) => {
@@ -558,4 +728,6 @@ checkoutForm?.addEventListener("submit", (event) => {
 applySettings();
 renderProducts();
 renderBasket();
+renderProductDetail();
+renderAdminPreview();
 syncAdminState();

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How It Works & Sell With Us | One More Look</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="One More Look home">
+        <img src="assets/one-more-look-logo.png" alt="One More Look" />
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html#shop">Shop</a>
+        <a href="index.html#new-in">New In</a>
+        <a href="about.html">About</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="basket-button" id="basketOpen" type="button" aria-label="Open basket">
+          <span class="bag-icon" aria-hidden="true">Bag</span>
+          <span id="basketCount">0</span>
+        </button>
+        <a class="sell-button" href="#sell-with-us">Sell With Us</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="page-hero-copy">
+          <p class="eyebrow">Buying & selling</p>
+          <h1>How One More Look <em>works.</em></h1>
+          <p>
+            Browse honest preloved listings, or send in your own quality pieces for one more look.
+            Both routes live here, with the same careful standard.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#how-it-works">How It Works</a>
+            <a class="button secondary" href="#sell-with-us">Sell With Us</a>
+          </div>
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&h=900&fit=crop&auto=format"
+          alt="A neat rack of preloved clothes"
+        />
+      </section>
+
+      <section class="promise-band combined-section" id="how-it-works">
+        <p class="eyebrow">Our Promise</p>
+        <h2>Buying preloved should feel clear, careful, and trustworthy.</h2>
+        <div class="content-grid">
+          <article class="content-panel">
+            <strong>01</strong>
+            <h2>We source with care</h2>
+            <p>
+              Every piece comes through our hands. We check condition, labels, fabric, and overall
+              quality before anything reaches the shop.
+            </p>
+          </article>
+          <article class="content-panel">
+            <strong>02</strong>
+            <h2>You browse honestly</h2>
+            <p>
+              Listings include clear photos, useful sizing, and condition notes so there are no
+              surprises when your parcel arrives.
+            </p>
+          </article>
+          <article class="content-panel">
+            <strong>03</strong>
+            <h2>We pack responsibly</h2>
+            <p>
+              Orders are packed with care using lower-waste materials wherever possible, ready for
+              another life in your wardrobe.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section sell-page-section" id="sell-with-us">
+        <div class="split-feature">
+          <img
+            src="https://images.unsplash.com/photo-1731341870711-bb9d7e3df593?w=900&h=900&fit=crop&auto=format"
+            alt="A store filled with curated preloved clothes"
+          />
+          <div>
+            <p class="eyebrow">Sell With Us</p>
+            <h2>Clear out your wardrobe, <em>earn what it is worth.</em></h2>
+            <p>
+              Send us your best preloved pieces and we will help them find another home. Payment
+              details and seller accounts can be connected properly later.
+            </p>
+            <div class="content-grid mini-grid">
+              <article class="content-panel">
+                <strong>Free label</strong>
+                <p>We can add prepaid labels later so sellers can send items in easily.</p>
+              </article>
+              <article class="content-panel">
+                <strong>Styled listings</strong>
+                <p>Items are photographed, described, priced, and added with care.</p>
+              </article>
+              <article class="content-panel">
+                <strong>Fair payout</strong>
+                <p>Seller payout rules can be managed once a real backend is added.</p>
+              </article>
+            </div>
+            <a class="button primary" href="contact.html">Start Selling</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <img src="assets/one-more-look-logo.png" alt="One More Look" />
+        <p>Curated preloved clothing from Cheshire, honestly described and ready for another wear.</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="index.html#shop">Shop</a>
+        <a href="about.html">About</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#sell-with-us">Sell With Us</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </footer>
+
+    <dialog class="basket-panel" id="basketPanel">
+      <div class="panel-top">
+        <div>
+          <p class="eyebrow">Your bag</p>
+          <h2>Ready to buy</h2>
+        </div>
+        <button class="icon-button" id="basketClose" type="button" aria-label="Close basket">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="basket-list" id="basketList"></div>
+      <div class="basket-footer">
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <strong id="basketSubtotal">GBP 0</strong>
+        </div>
+        <a class="button primary" id="checkoutLink" href="index.html#checkout">Go to checkout</a>
+        <button class="button secondary" id="clearBasket" type="button">Clear bag</button>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>

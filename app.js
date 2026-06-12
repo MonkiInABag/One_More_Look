@@ -1,52 +1,52 @@
 const defaultProducts = [
   {
-    id: "denim-jacket",
+    id: "linen-blazer",
+    name: "Linen Blazer - Oat",
+    category: "outerwear",
+    price: 48,
+    size: "M",
+    image:
+      "https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=600&h=750&fit=crop&auto=format",
+    notes: "Like new condition. Soft tailoring, easy to dress up or down.",
+  },
+  {
+    id: "silk-midi-dress",
+    name: "Silk Midi Dress - Burgundy",
+    category: "dresses",
+    price: 62,
+    size: "S",
+    image:
+      "https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?w=600&h=750&fit=crop&auto=format",
+    notes: "Excellent condition with a fluid fit and deep seasonal colour.",
+  },
+  {
+    id: "washed-denim-jacket",
     name: "Washed Denim Jacket",
     category: "outerwear",
-    price: 32,
-    size: "UK 10 / M",
+    price: 35,
+    size: "L",
     image:
-      "https://images.unsplash.com/photo-1543076447-215ad9ba6923?auto=format&fit=crop&w=900&q=80",
-    notes: "Relaxed fit with soft fading and light vintage wear.",
+      "https://images.unsplash.com/photo-1637228393246-c38a4b3d2011?w=600&h=750&fit=crop&auto=format",
+    notes: "Good preloved condition with relaxed fading and a classic cut.",
   },
   {
-    id: "cream-knit",
-    name: "Cream Cable Knit",
+    id: "merino-turtleneck",
+    name: "Merino Turtleneck - Cream",
     category: "tops",
-    price: 24,
-    size: "S / M",
+    price: 29,
+    size: "XS",
     image:
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80",
-    notes: "Cosy knit, great condition, easy winter layering piece.",
-  },
-  {
-    id: "tailored-trousers",
-    name: "Tailored Black Trousers",
-    category: "bottoms",
-    price: 20,
-    size: "W28",
-    image:
-      "https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?auto=format&fit=crop&w=900&q=80",
-    notes: "Straight-leg fit with a clean smart-casual shape.",
-  },
-  {
-    id: "mini-bag",
-    name: "Chocolate Mini Bag",
-    category: "accessories",
-    price: 18,
-    size: "One size",
-    image:
-      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80",
-    notes: "Compact shoulder bag with gold-tone hardware.",
+      "https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?w=600&h=750&fit=crop&auto=format",
+    notes: "Like new knitwear, soft against the skin and ideal for layering.",
   },
 ];
 
 const defaultSettings = {
   hero:
-    "Giving quality clothes a second look with curated drops, honest condition notes, and affordable finds.",
+    "Hand-picked preloved pieces from Cheshire, lovingly checked, honestly described, and priced to find a new home. Because beautiful clothes deserve a second life.",
   about:
-    "One More Look is built around simple, careful resale: handpicked pieces, regular drops, and styling that makes preloved clothing feel exciting again.",
-  accent: "#a95f55",
+    "One More Look is built around careful resale: hand-picked pieces, regular drops, and styling that makes preloved clothing feel exciting again.",
+  accent: "#c9a882",
   vinted: "#",
   ebay: "#",
 };
@@ -97,6 +97,10 @@ const checkoutItems = document.querySelector("#checkoutItems");
 const checkoutSubtotal = document.querySelector("#checkoutSubtotal");
 const checkoutForm = document.querySelector("#checkoutForm");
 const checkoutMessage = document.querySelector("#checkoutMessage");
+const itemImageInput = document.querySelector("#itemImage");
+const imageDropzone = document.querySelector("#imageDropzone");
+const itemImageFile = document.querySelector("#itemImageFile");
+const imagePreview = document.querySelector("#imagePreview");
 
 let activeFilter = "all";
 
@@ -133,6 +137,10 @@ function basketTotal() {
 }
 
 function renderProducts() {
+  if (!productGrid || !stockCount) {
+    return;
+  }
+
   const products = store.products;
   const basketIds = store.basket;
   const visibleProducts =
@@ -175,17 +183,23 @@ function renderProducts() {
 }
 
 function renderBasket() {
+  if (!basketCount) {
+    return;
+  }
+
   const basketProducts = getBasketProducts();
   const total = pounds(basketTotal());
 
   basketCount.textContent = basketProducts.length;
-  basketSubtotal.textContent = total;
-  checkoutSubtotal.textContent = total;
+  if (basketSubtotal) basketSubtotal.textContent = total;
+  if (checkoutSubtotal) checkoutSubtotal.textContent = total;
 
   if (basketProducts.length === 0) {
-    basketList.innerHTML = `<p class="empty-state">Your basket is empty.</p>`;
-    checkoutItems.innerHTML = `<p class="empty-state">Add pieces to your basket before checkout.</p>`;
-    checkoutForm.querySelector("button[type='submit']").disabled = true;
+    if (basketList) basketList.innerHTML = `<p class="empty-state">Your bag is empty.</p>`;
+    if (checkoutItems) {
+      checkoutItems.innerHTML = `<p class="empty-state">Add pieces to your bag before checkout.</p>`;
+    }
+    if (checkoutForm) checkoutForm.querySelector("button[type='submit']").disabled = true;
     return;
   }
 
@@ -219,9 +233,9 @@ function renderBasket() {
     )
     .join("");
 
-  basketList.innerHTML = basketMarkup;
-  checkoutItems.innerHTML = checkoutMarkup;
-  checkoutForm.querySelector("button[type='submit']").disabled = false;
+  if (basketList) basketList.innerHTML = basketMarkup;
+  if (checkoutItems) checkoutItems.innerHTML = checkoutMarkup;
+  if (checkoutForm) checkoutForm.querySelector("button[type='submit']").disabled = false;
 }
 
 function addToBasket(id) {
@@ -270,18 +284,32 @@ function renderStockList() {
 function applySettings() {
   const settings = store.settings;
   document.documentElement.style.setProperty("--accent", settings.accent);
-  document.querySelector("#heroText").textContent = settings.hero;
-  document.querySelector("#aboutText").textContent = settings.about;
-  document.querySelector("#vintedLink").href = settings.vinted || "#";
-  document.querySelector("#ebayLink").href = settings.ebay || "#";
-  document.querySelector("#settingHero").value = settings.hero;
-  document.querySelector("#settingAbout").value = settings.about;
-  document.querySelector("#settingAccent").value = settings.accent;
-  document.querySelector("#settingVinted").value = settings.vinted;
-  document.querySelector("#settingEbay").value = settings.ebay;
+  const heroText = document.querySelector("#heroText");
+  const aboutText = document.querySelector("#aboutText");
+  const vintedLink = document.querySelector("#vintedLink");
+  const ebayLink = document.querySelector("#ebayLink");
+  const settingHero = document.querySelector("#settingHero");
+  const settingAbout = document.querySelector("#settingAbout");
+  const settingAccent = document.querySelector("#settingAccent");
+  const settingVinted = document.querySelector("#settingVinted");
+  const settingEbay = document.querySelector("#settingEbay");
+
+  if (heroText) heroText.textContent = settings.hero;
+  if (aboutText) aboutText.textContent = settings.about;
+  if (vintedLink) vintedLink.href = settings.vinted || "#";
+  if (ebayLink) ebayLink.href = settings.ebay || "#";
+  if (settingHero) settingHero.value = settings.hero;
+  if (settingAbout) settingAbout.value = settings.about;
+  if (settingAccent) settingAccent.value = settings.accent;
+  if (settingVinted) settingVinted.value = settings.vinted;
+  if (settingEbay) settingEbay.value = settings.ebay;
 }
 
 function syncAdminState() {
+  if (!loginForm || !adminArea || !panelTitle) {
+    return;
+  }
+
   const isLoggedIn = store.employeeLoggedIn;
   loginForm.classList.toggle("hidden", isLoggedIn);
   adminArea.classList.toggle("hidden", !isLoggedIn);
@@ -292,8 +320,13 @@ function syncAdminState() {
 }
 
 function resetStockForm() {
+  if (!stockForm) {
+    return;
+  }
+
   stockForm.reset();
   document.querySelector("#itemId").value = "";
+  updateImagePreview("");
 }
 
 function fillStockForm(item) {
@@ -304,37 +337,66 @@ function fillStockForm(item) {
   document.querySelector("#itemSize").value = item.size;
   document.querySelector("#itemImage").value = item.image;
   document.querySelector("#itemNotes").value = item.notes;
+  updateImagePreview(item.image);
 }
 
-document.querySelector("#employeeOpen").addEventListener("click", () => {
+function updateImagePreview(src) {
+  if (!imagePreview) {
+    return;
+  }
+
+  if (!src) {
+    imagePreview.classList.add("hidden");
+    imagePreview.removeAttribute("src");
+    return;
+  }
+
+  imagePreview.src = src;
+  imagePreview.classList.remove("hidden");
+}
+
+function useImageFile(file) {
+  if (!file || !file.type.startsWith("image/") || !itemImageInput) {
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    itemImageInput.value = reader.result;
+    updateImagePreview(reader.result);
+  });
+  reader.readAsDataURL(file);
+}
+
+document.querySelector("#employeeOpen")?.addEventListener("click", () => {
   syncAdminState();
   employeePanel.showModal();
 });
 
-document.querySelector("#employeeClose").addEventListener("click", () => {
+document.querySelector("#employeeClose")?.addEventListener("click", () => {
   employeePanel.close();
 });
 
-document.querySelector("#basketOpen").addEventListener("click", () => {
+document.querySelector("#basketOpen")?.addEventListener("click", () => {
   renderBasket();
   basketPanel.showModal();
 });
 
-document.querySelector("#basketClose").addEventListener("click", () => {
+document.querySelector("#basketClose")?.addEventListener("click", () => {
   basketPanel.close();
 });
 
-document.querySelector("#checkoutLink").addEventListener("click", () => {
+document.querySelector("#checkoutLink")?.addEventListener("click", () => {
   basketPanel.close();
 });
 
-document.querySelector("#clearBasket").addEventListener("click", () => {
+document.querySelector("#clearBasket")?.addEventListener("click", () => {
   store.basket = [];
   renderProducts();
   renderBasket();
 });
 
-loginForm.addEventListener("submit", (event) => {
+loginForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   const password = document.querySelector("#employeePassword").value;
 
@@ -348,7 +410,7 @@ loginForm.addEventListener("submit", (event) => {
   syncAdminState();
 });
 
-document.querySelector("#logoutButton").addEventListener("click", () => {
+document.querySelector("#logoutButton")?.addEventListener("click", () => {
   store.employeeLoggedIn = false;
   syncAdminState();
 });
@@ -362,14 +424,14 @@ document.querySelectorAll(".filter").forEach((button) => {
   });
 });
 
-productGrid.addEventListener("click", (event) => {
+productGrid?.addEventListener("click", (event) => {
   const itemId = event.target.dataset.addBasket;
   if (itemId) {
     addToBasket(itemId);
   }
 });
 
-basketList.addEventListener("click", (event) => {
+basketList?.addEventListener("click", (event) => {
   const itemId = event.target.dataset.removeBasket;
   if (itemId) {
     removeFromBasket(itemId);
@@ -385,7 +447,7 @@ document.querySelectorAll(".tab").forEach((button) => {
   });
 });
 
-stockForm.addEventListener("submit", (event) => {
+stockForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   const id = document.querySelector("#itemId").value;
   const name = document.querySelector("#itemName").value.trim();
@@ -409,7 +471,7 @@ stockForm.addEventListener("submit", (event) => {
   renderStockList();
 });
 
-stockList.addEventListener("click", (event) => {
+stockList?.addEventListener("click", (event) => {
   const editId = event.target.dataset.edit;
   const deleteId = event.target.dataset.delete;
 
@@ -430,9 +492,32 @@ stockList.addEventListener("click", (event) => {
   }
 });
 
-document.querySelector("#clearForm").addEventListener("click", resetStockForm);
+document.querySelector("#clearForm")?.addEventListener("click", resetStockForm);
 
-settingsForm.addEventListener("submit", (event) => {
+itemImageInput?.addEventListener("input", () => {
+  updateImagePreview(itemImageInput.value.trim());
+});
+
+itemImageFile?.addEventListener("change", () => {
+  useImageFile(itemImageFile.files[0]);
+});
+
+imageDropzone?.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  imageDropzone.classList.add("drag-over");
+});
+
+imageDropzone?.addEventListener("dragleave", () => {
+  imageDropzone.classList.remove("drag-over");
+});
+
+imageDropzone?.addEventListener("drop", (event) => {
+  event.preventDefault();
+  imageDropzone.classList.remove("drag-over");
+  useImageFile(event.dataTransfer.files[0]);
+});
+
+settingsForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   store.settings = {
     ...store.settings,
@@ -443,7 +528,7 @@ settingsForm.addEventListener("submit", (event) => {
   applySettings();
 });
 
-linksForm.addEventListener("submit", (event) => {
+linksForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   store.settings = {
     ...store.settings,
@@ -453,7 +538,7 @@ linksForm.addEventListener("submit", (event) => {
   applySettings();
 });
 
-checkoutForm.addEventListener("submit", (event) => {
+checkoutForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   const basketProducts = getBasketProducts();
 

@@ -3,35 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>One More Look | Preloved Fashion</title>
+    <title>One More Look | Preloved Clothing Cheshire</title>
     <meta
       name="description"
-      content="One More Look sells handpicked preloved clothing, giving every piece one more look."
+      content="One More Look sells hand-picked preloved clothing from Cheshire."
     />
-    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#home" aria-label="One More Look home">
-        <span class="brand-mark">oml</span>
-        <span>
-          <strong>One More Look</strong>
-          <small>Preloved Fashion</small>
-        </span>
+      <a class="brand" href="index.html" aria-label="One More Look home">
+        <img src="assets/Screenshot 2026-06-12 185606.png" alt="One More Look" />
       </a>
 
       <nav class="main-nav" aria-label="Main navigation">
         <a href="#shop">Shop</a>
-        <a href="#new">New Drops</a>
-        <a href="#about">About</a>
+        <a href="#new-in">New In</a>
+        <a href="about.html">About</a>
+        <a href="how-it-works.html#how-it-works">How It Works</a>
+        <a href="contact.html">Contact</a>
       </nav>
 
       <div class="header-actions">
         <button class="basket-button" id="basketOpen" type="button" aria-label="Open basket">
-          Basket
+          <span class="bag-icon" aria-hidden="true">Bag</span>
           <span id="basketCount">0</span>
         </button>
+        <a class="sell-button" href="how-it-works.html#sell-with-us">Sell With Us</a>
         <button class="icon-button" id="employeeOpen" type="button" aria-label="Employee login">
           <span aria-hidden="true">+</span>
         </button>
@@ -40,56 +44,76 @@
 
     <main id="home">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-media" aria-hidden="true">
-          <img
-            src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1200&q=80"
-            alt=""
-          />
-        </div>
         <div class="hero-copy">
-          <p class="eyebrow">Handpicked preloved clothing</p>
-          <h1 id="hero-title">One More Look</h1>
-          <p id="heroText">
-            Giving quality clothes a second look with curated drops, honest condition notes, and
-            affordable finds.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#shop">Shop the drop</a>
-            <a class="button secondary" href="#about">Our story</a>
+          <div class="hero-inner">
+            <img
+              class="hero-logo"
+                src="assets/Screenshot 2026-06-12 185606.png"
+              alt="One More Look Preloved Clothing Cheshire"
+            />
+            <h1 id="hero-title">Wear the story,<br /><em>not the price tag.</em></h1>
+            <p id="heroText">
+              Hand-picked preloved pieces from Cheshire, lovingly checked, honestly described, and
+              priced to find a new home. Because beautiful clothes deserve a second life.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#shop">Browse the Collection</a>
+              <a class="button secondary" href="how-it-works.html#how-it-works">How It Works</a>
+            </div>
+            <div class="hero-stats" aria-label="Shop highlights">
+              <div>
+                <strong id="stockCount">0</strong>
+                <span>Items Listed</span>
+              </div>
+              <div>
+                <strong>98%</strong>
+                <span>Happy Buyers</span>
+              </div>
+              <div>
+                <strong>4.9</strong>
+                <span>Avg. Rating</span>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-
-      <section class="stats-band" aria-label="Shop highlights">
-        <div>
-          <strong id="stockCount">0</strong>
-          <span>pieces live</span>
-        </div>
-        <div>
-          <strong>Daily</strong>
-          <span>new drops</span>
-        </div>
-        <div>
-          <strong>One more</strong>
-          <span>look, less waste</span>
+        <div class="hero-media">
+          <img
+            src="https://images.unsplash.com/photo-1595991209266-711c557ac7c4?w=900&h=1100&fit=crop&auto=format"
+            alt="Curated vintage clothing inside a boutique"
+          />
+          <div class="arrival-note">
+            <strong>New arrivals every Friday</strong>
+            <span>Free shipping on orders over GBP 50</span>
+          </div>
         </div>
       </section>
 
       <section class="section" id="shop" aria-labelledby="shop-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Browse stock</p>
-            <h2 id="shop-title">Current Collection</h2>
+            <p class="eyebrow">The Collection</p>
+            <h2 id="shop-title">Shop Preloved Pieces</h2>
           </div>
-          <div class="filters" aria-label="Product filters">
-            <button class="filter active" type="button" data-filter="all">All</button>
-            <button class="filter" type="button" data-filter="tops">Tops</button>
-            <button class="filter" type="button" data-filter="outerwear">Outerwear</button>
-            <button class="filter" type="button" data-filter="bottoms">Bottoms</button>
-            <button class="filter" type="button" data-filter="accessories">Accessories</button>
-          </div>
+          <a class="text-link" href="#shop">View all items</a>
+        </div>
+        <div class="filters" aria-label="Product filters">
+          <button class="filter active" type="button" data-filter="all">All</button>
+          <button class="filter" type="button" data-filter="tops">Tops</button>
+          <button class="filter" type="button" data-filter="dresses">Dresses</button>
+          <button class="filter" type="button" data-filter="outerwear">Outerwear</button>
+          <button class="filter" type="button" data-filter="bottoms">Bottoms</button>
+          <button class="filter" type="button" data-filter="accessories">Accessories</button>
         </div>
         <div class="product-grid" id="productGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="promise-band" id="new-in" aria-labelledby="new-title">
+        <p class="eyebrow">New In</p>
+        <h2 id="new-title">Fresh Friday drops, carefully checked before they land.</h2>
+        <p>
+          We keep the collection edited and honest, with clear condition notes, real sizing, and
+          prices that help each piece find one more look.
+        </p>
       </section>
 
       <section class="section checkout-section" id="checkout" aria-labelledby="checkout-title">
@@ -97,8 +121,8 @@
           <p class="eyebrow">Secure checkout</p>
           <h2 id="checkout-title">Checkout</h2>
           <p>
-            Fill in your details and review the order. Payment buttons can be connected here later
-            with Stripe, PayPal, or another provider.
+            Fill in your details and review the order. Stripe, PayPal, or another payment provider
+            can be connected here later.
           </p>
         </div>
 
@@ -150,38 +174,22 @@
           </aside>
         </div>
       </section>
-
-      <section class="new-drop" id="new" aria-labelledby="new-title">
-        <div>
-          <p class="eyebrow">Fresh finds</p>
-          <h2 id="new-title">New drops without the fast-fashion rush</h2>
-        </div>
-        <p>
-          Each item is checked, photographed, and listed with clear sizing and condition notes so
-          customers can buy with confidence.
-        </p>
-      </section>
-
-      <section class="section about" id="about" aria-labelledby="about-title">
-        <div>
-          <p class="eyebrow">About us</p>
-          <h2 id="about-title">A small shop for clothes worth another wear</h2>
-        </div>
-        <p id="aboutText">
-          One More Look is built around simple, careful resale: handpicked pieces, regular drops,
-          and styling that makes preloved clothing feel exciting again.
-        </p>
-        <div class="social-links">
-          <a href="https://linktr.ee/onemorelook" target="_blank" rel="noreferrer">Linktree</a>
-          <a href="#" id="vintedLink">Vinted</a>
-          <a href="#" id="ebayLink">eBay</a>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">
-      <span>One More Look</span>
-      <span>Preloved fashion, styled for another story.</span>
+      <div>
+        <img src="assets/Screenshot 2026-06-12 185606.png" alt="One More Look" />
+        <p>
+          Curated preloved clothing from Cheshire. Every piece is hand-picked, honestly described,
+          and priced to find a new home fast.
+        </p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="about.html">About</a>
+        <a href="how-it-works.html#how-it-works">How It Works</a>
+        <a href="how-it-works.html#sell-with-us">Sell With Us</a>
+        <a href="contact.html">Contact</a>
+      </nav>
     </footer>
 
     <dialog class="employee-panel" id="employeePanel">
@@ -226,6 +234,7 @@
               Category
               <select id="itemCategory">
                 <option value="tops">Tops</option>
+                <option value="dresses">Dresses</option>
                 <option value="outerwear">Outerwear</option>
                 <option value="bottoms">Bottoms</option>
                 <option value="accessories">Accessories</option>
@@ -243,6 +252,14 @@
               Image URL
               <input type="url" id="itemImage" placeholder="https://..." required />
             </label>
+            <div class="upload-dropzone full" id="imageDropzone">
+              <input type="file" id="itemImageFile" accept="image/*" />
+              <div>
+                <strong>Add image from device</strong>
+                <span>Click to choose a photo, or drag and drop one here.</span>
+              </div>
+              <img class="upload-preview hidden" id="imagePreview" alt="Selected item preview" />
+            </div>
             <label class="full">
               Notes
               <textarea id="itemNotes" placeholder="Condition, fit, fabric, styling note" required></textarea>
@@ -267,7 +284,7 @@
             </label>
             <label>
               Accent colour
-              <input type="color" id="settingAccent" value="#a95f55" />
+              <input type="color" id="settingAccent" value="#c9a882" />
             </label>
             <button class="button primary" type="submit">Update website</button>
           </form>
@@ -294,7 +311,7 @@
     <dialog class="basket-panel" id="basketPanel">
       <div class="panel-top">
         <div>
-          <p class="eyebrow">Your basket</p>
+          <p class="eyebrow">Your bag</p>
           <h2>Ready to buy</h2>
         </div>
         <button class="icon-button" id="basketClose" type="button" aria-label="Close basket">
@@ -308,7 +325,7 @@
           <strong id="basketSubtotal">GBP 0</strong>
         </div>
         <a class="button primary" id="checkoutLink" href="#checkout">Go to checkout</a>
-        <button class="button secondary" id="clearBasket" type="button">Clear basket</button>
+        <button class="button secondary" id="clearBasket" type="button">Clear bag</button>
       </div>
     </dialog>
 

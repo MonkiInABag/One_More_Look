@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact | One More Look</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="One More Look home">
+        <img src="assets/one-more-look-logo.png" alt="One More Look" />
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html#shop">Shop</a>
+        <a href="index.html#new-in">New In</a>
+        <a href="about.html">About</a>
+        <a href="how-it-works.html#how-it-works">How It Works</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="basket-button" id="basketOpen" type="button" aria-label="Open basket">
+          <span class="bag-icon" aria-hidden="true">Bag</span>
+          <span id="basketCount">0</span>
+        </button>
+        <a class="sell-button" href="how-it-works.html#sell-with-us">Sell With Us</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="page-hero-copy">
+          <p class="eyebrow">Contact</p>
+          <h1>Questions, collabs, selling, <em>or order help.</em></h1>
+          <p>
+            Use this page for buyer questions, seller enquiries, sizing help, delivery questions,
+            or anything you want to ask One More Look.
+          </p>
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&h=900&fit=crop&auto=format"
+          alt="Clothing shop interior"
+        />
+      </section>
+
+      <section class="page-section">
+        <form class="contact-card">
+          <label>
+            Name
+            <input type="text" required />
+          </label>
+          <label>
+            Email
+            <input type="email" required />
+          </label>
+          <label>
+            Enquiry type
+            <select>
+              <option>Buying an item</option>
+              <option>Selling clothes</option>
+              <option>Order help</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            Message
+            <textarea required></textarea>
+          </label>
+          <button class="button primary" type="submit">Send message</button>
+          <p class="form-note">
+            This form is ready visually. We can connect it to email or a database later.
+          </p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <img src="assets/one-more-look-logo.png" alt="One More Look" />
+        <p>Curated preloved clothing from Cheshire, honestly described and ready for another wear.</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="index.html#shop">Shop</a>
+        <a href="about.html">About</a>
+        <a href="how-it-works.html#how-it-works">How It Works</a>
+        <a href="how-it-works.html#sell-with-us">Sell With Us</a>
+      </nav>
+    </footer>
+
+    <dialog class="basket-panel" id="basketPanel">
+      <div class="panel-top">
+        <div>
+          <p class="eyebrow">Your bag</p>
+          <h2>Ready to buy</h2>
+        </div>
+        <button class="icon-button" id="basketClose" type="button" aria-label="Close basket">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="basket-list" id="basketList"></div>
+      <div class="basket-footer">
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <strong id="basketSubtotal">GBP 0</strong>
+        </div>
+        <a class="button primary" id="checkoutLink" href="index.html#checkout">Go to checkout</a>
+        <button class="button secondary" id="clearBasket" type="button">Clear bag</button>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>

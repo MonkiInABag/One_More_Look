@@ -7,6 +7,7 @@ const defaultProducts = [
     size: "M",
     image:
       "https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=600&h=750&fit=crop&auto=format",
+    material: "Linen",
     notes: "Like new condition. Soft tailoring, easy to dress up or down.",
   },
   {
@@ -17,6 +18,7 @@ const defaultProducts = [
     size: "S",
     image:
       "https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?w=600&h=750&fit=crop&auto=format",
+    material: "Silk",
     notes: "Excellent condition with a fluid fit and deep seasonal colour.",
   },
   {
@@ -27,6 +29,7 @@ const defaultProducts = [
     size: "L",
     image:
       "https://images.unsplash.com/photo-1637228393246-c38a4b3d2011?w=600&h=750&fit=crop&auto=format",
+    material: "Denim",
     notes: "Good preloved condition with relaxed fading and a classic cut.",
   },
   {
@@ -37,6 +40,7 @@ const defaultProducts = [
     size: "XS",
     image:
       "https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?w=600&h=750&fit=crop&auto=format",
+    material: "Wool",
     notes: "Like new knitwear, soft against the skin and ideal for layering.",
   },
 ];
@@ -109,8 +113,11 @@ const itemAdPreview = document.querySelector("#itemAdPreview");
 const productDetail = document.querySelector("#productDetail");
 const menuToggle = document.querySelector("#menuToggle");
 const siteNav = document.querySelector("#siteNav");
-
+const sortSelect = document.querySelector("#sortSelect");
 let activeFilter = "all";
+let activeSort = "newest";
+const activeSizes = new Set();
+const activeMaterials = new Set();
 let uploadedGalleryImages = [];
 
 function pounds(value) {
@@ -145,21 +152,48 @@ function productImages(item) {
   return [item.image, ...(item.images || [])].filter(Boolean);
 }
 
+function matchesSelectedSizes(item) {
+  if (activeSizes.size === 0) {
+    return true;
+  }
+
+  const itemSize = String(item.size || "").toLowerCase();
+  return [...activeSizes].some((size) => itemSize.includes(size.toLowerCase()));
+}
+
+function matchesSelectedMaterials(item) {
+  if (activeMaterials.size === 0) {
+    return true;
+  }
+
+  const material = String(item.material || "").toLowerCase();
+  return [...activeMaterials].some((selected) => material.includes(selected.toLowerCase()));
+}
+
 function basketTotal() {
   return getBasketProducts().reduce((total, item) => total + Number(item.price), 0);
 }
 
 function renderProducts() {
-  if (!productGrid || !stockCount) {
+  if (!productGrid) {
     return;
   }
 
   const products = store.products;
   const basketIds = store.basket;
-  const visibleProducts =
+  let visibleProducts =
     activeFilter === "all" ? products : products.filter((item) => item.category === activeFilter);
 
-  stockCount.textContent = products.length;
+  visibleProducts = visibleProducts.filter(matchesSelectedSizes);
+  visibleProducts = visibleProducts.filter(matchesSelectedMaterials);
+
+  visibleProducts = [...visibleProducts].sort((a, b) => {
+    if (activeSort === "low-high") return Number(a.price) - Number(b.price);
+    if (activeSort === "high-low") return Number(b.price) - Number(a.price);
+    return 0;
+  });
+
+  if (stockCount) stockCount.textContent = products.length;
 
   if (visibleProducts.length === 0) {
     productGrid.innerHTML = `<p class="empty-state">No pieces in this category yet.</p>`;
@@ -182,6 +216,7 @@ function renderProducts() {
                 <span class="price">${pounds(item.price)}</span>
               </div>
               <span class="pill">${escapeHtml(item.size)}</span>
+              ${item.material ? `<span class="pill">${escapeHtml(item.material)}</span>` : ""}
               <p>${escapeHtml(item.notes)}</p>
             </div>
           </a>
@@ -232,6 +267,7 @@ function renderProductDetail() {
       <h1>${escapeHtml(item.name)}</h1>
       <p class="detail-price">${pounds(item.price)}</p>
       <span class="pill">${escapeHtml(item.size)}</span>
+      ${item.material ? `<span class="pill">${escapeHtml(item.material)}</span>` : ""}
       <p>${escapeHtml(item.notes)}</p>
       <button class="button primary" type="button" data-detail-add="${escapeHtml(item.id)}">
         ${store.basket.includes(item.id) ? "In basket" : "Add to basket"}
@@ -397,6 +433,7 @@ function fillStockForm(item) {
   document.querySelector("#itemCategory").value = item.category;
   document.querySelector("#itemPrice").value = item.price;
   document.querySelector("#itemSize").value = item.size;
+  document.querySelector("#itemMaterial").value = item.material || "";
   document.querySelector("#itemImage").value = item.image;
   document.querySelector("#itemExtraImages").value = (item.images || []).join("\n");
   document.querySelector("#itemNotes").value = item.notes;
@@ -454,6 +491,7 @@ function renderAdminPreview() {
   const name = document.querySelector("#itemName")?.value.trim() || "Item preview";
   const price = Number(document.querySelector("#itemPrice")?.value || 0);
   const size = document.querySelector("#itemSize")?.value.trim() || "Size";
+  const material = document.querySelector("#itemMaterial")?.value.trim();
   const notes = document.querySelector("#itemNotes")?.value.trim() || "Condition and item notes will preview here.";
   const image = itemImageInput?.value.trim();
 
@@ -467,6 +505,7 @@ function renderAdminPreview() {
           <span class="price">${price ? pounds(price) : "GBP 0"}</span>
         </div>
         <span class="pill">${escapeHtml(size)}</span>
+        ${material ? `<span class="pill">${escapeHtml(material)}</span>` : ""}
         <p>${escapeHtml(notes)}</p>
       </div>
     </div>
@@ -559,6 +598,41 @@ document.querySelectorAll(".filter").forEach((button) => {
   });
 });
 
+document.querySelectorAll(".size-filter").forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    if (checkbox.checked) {
+      activeSizes.add(checkbox.value);
+    } else {
+      activeSizes.delete(checkbox.value);
+    }
+    renderProducts();
+  });
+});
+
+document.querySelectorAll(".material-filter").forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    if (checkbox.checked) {
+      activeMaterials.add(checkbox.value);
+    } else {
+      activeMaterials.delete(checkbox.value);
+    }
+    renderProducts();
+  });
+});
+
+sortSelect?.addEventListener("change", () => {
+  activeSort = sortSelect.value;
+  renderProducts();
+});
+
+document.querySelectorAll("[data-menu-filter]").forEach((link) => {
+  link.addEventListener("click", () => {
+    const filter = link.dataset.menuFilter;
+    const button = document.querySelector(`.filter[data-filter="${filter}"]`);
+    if (button) button.click();
+  });
+});
+
 productGrid?.addEventListener("click", (event) => {
   const itemId = event.target.dataset.addBasket;
   if (itemId) {
@@ -600,6 +674,7 @@ stockForm?.addEventListener("submit", (event) => {
     category: document.querySelector("#itemCategory").value,
     price: Number(document.querySelector("#itemPrice").value),
     size: document.querySelector("#itemSize").value.trim(),
+    material: document.querySelector("#itemMaterial").value.trim(),
     image: document.querySelector("#itemImage").value.trim(),
     images: [...getExtraImageUrls(), ...uploadedGalleryImages],
     notes: document.querySelector("#itemNotes").value.trim(),

@@ -20,12 +20,63 @@
     <header class="site-header">
       <nav class="main-nav" id="siteNav" aria-label="Main navigation">
         <a href="index.html">Home</a>
-        <a href="#shop">Shop</a>
+        <span class="nav-shop">
+          <a href="#shop">Shop</a>
+          <div class="mega-menu" aria-label="Shop menu">
+            <div class="mega-columns">
+              <div>
+                <p>By Category</p>
+                <a href="#shop" data-menu-filter="all">All</a>
+                <a href="#shop" data-menu-filter="dresses">Dresses</a>
+                <a href="#shop" data-menu-filter="tops">Tops</a>
+                <a href="#shop" data-menu-filter="outerwear">Jackets</a>
+                <a href="#shop" data-menu-filter="bottoms">Trousers</a>
+                <a href="#shop" data-menu-filter="shoes">Shoes</a>
+                <a href="#shop" data-menu-filter="accessories">Accessories</a>
+              </div>
+              <div>
+                <p>By Occasion</p>
+                <a href="#shop">Everyday</a>
+                <a href="#shop">Date Night</a>
+                <a href="#shop">Workwear</a>
+                <a href="#shop">Party</a>
+                <a href="#shop">Loungewear</a>
+                <a href="#shop">Gifting</a>
+              </div>
+              <div>
+                <p>By Collection</p>
+                <a href="#new-in">New In</a>
+                <a href="#shop">Core Collection</a>
+                <a href="#shop">Denim</a>
+                <a href="#shop">Simple Statements</a>
+                <a href="#shop">Petite</a>
+              </div>
+            </div>
+            <div class="mega-tiles">
+              <a class="mega-tile" href="#shop" data-menu-filter="tops">
+                <img src="https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?w=500&h=700&fit=crop&auto=format" alt="Tops" />
+                <span>Tops</span>
+              </a>
+              <a class="mega-tile" href="#shop" data-menu-filter="dresses">
+                <img src="https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?w=500&h=700&fit=crop&auto=format" alt="Dresses" />
+                <span>Dresses</span>
+              </a>
+              <a class="mega-tile" href="#shop" data-menu-filter="bottoms">
+                <img src="https://images.unsplash.com/photo-1506629905607-d405d7d3b0d2?w=500&h=700&fit=crop&auto=format" alt="Trousers" />
+                <span>Trousers</span>
+              </a>
+            </div>
+          </div>
+        </span>
         <a href="#new-in">New In</a>
         <a href="about.html">About</a>
         <a href="how-it-works.html#how-it-works">How It Works</a>
         <a href="contact.html">Contact</a>
       </nav>
+
+      <a class="top-logo" href="index.html" aria-label="One More Look home">
+        <img src="assets/top-logo-transparent.png" alt="One More Look" />
+      </a>
 
       <div class="header-actions">
         <button class="menu-button" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav">
@@ -48,10 +99,8 @@
           <div class="hero-inner">
             <img
               class="hero-logo"
-                src="assets/Screenshot 2026-06-12 185606.png"
-              alt="One More Look Preloved Clothing Cheshire"
             />
-            <h1 id="hero-title">Wear the story,<br /><em>not the price tag.</em></h1>
+            <h1 id="hero-title">Giving preloved clothing<br /><em>a second look.</em></h1>
             <p id="heroText">
               Hand-picked preloved pieces from Cheshire, lovingly checked, honestly described, and
               priced to find a new home. Because beautiful clothes deserve a second life.
@@ -59,20 +108,6 @@
             <div class="hero-actions">
               <a class="button primary" href="#shop">Browse the Collection</a>
               <a class="button secondary" href="how-it-works.html#how-it-works">How It Works</a>
-            </div>
-            <div class="hero-stats" aria-label="Shop highlights">
-              <div>
-                <strong id="stockCount">0</strong>
-                <span>Items Listed</span>
-              </div>
-              <div>
-                <strong>98%</strong>
-                <span>Happy Buyers</span>
-              </div>
-              <div>
-                <strong>4.9</strong>
-                <span>Avg. Rating</span>
-              </div>
             </div>
           </div>
         </div>
@@ -96,13 +131,53 @@
           </div>
           <a class="text-link" href="#shop">View all items</a>
         </div>
-        <div class="filters" aria-label="Product filters">
-          <button class="filter active" type="button" data-filter="all">All</button>
-          <button class="filter" type="button" data-filter="tops">Tops</button>
-          <button class="filter" type="button" data-filter="dresses">Dresses</button>
-          <button class="filter" type="button" data-filter="outerwear">Outerwear</button>
-          <button class="filter" type="button" data-filter="bottoms">Bottoms</button>
-          <button class="filter" type="button" data-filter="accessories">Accessories</button>
+        <div class="shop-controls">
+          <details class="filter-menu" aria-label="Product filters">
+            <summary class="filter-menu-summary">Filter</summary>
+            <details class="filter-group">
+              <summary>Category</summary>
+              <div class="filters">
+                <button class="filter active" type="button" data-filter="all">All</button>
+                <button class="filter" type="button" data-filter="tops">Tops</button>
+                <button class="filter" type="button" data-filter="dresses">Dresses</button>
+                <button class="filter" type="button" data-filter="outerwear">Outerwear</button>
+                <button class="filter" type="button" data-filter="bottoms">Bottoms</button>
+                <button class="filter" type="button" data-filter="shoes">Shoes</button>
+                <button class="filter" type="button" data-filter="accessories">Accessories</button>
+              </div>
+            </details>
+            <details class="filter-group">
+              <summary>Size</summary>
+              <div class="size-options">
+                <label><input class="size-filter" type="checkbox" value="XS" /> XS</label>
+                <label><input class="size-filter" type="checkbox" value="S" /> S</label>
+                <label><input class="size-filter" type="checkbox" value="M" /> M</label>
+                <label><input class="size-filter" type="checkbox" value="L" /> L</label>
+                <label><input class="size-filter" type="checkbox" value="XL" /> XL</label>
+                <label><input class="size-filter" type="checkbox" value="One Size" /> One Size</label>
+                <label><input class="size-filter" type="checkbox" value="UK" /> UK sizes</label>
+              </div>
+            </details>
+            <details class="filter-group">
+              <summary>Material</summary>
+              <div class="size-options">
+                <label><input class="material-filter" type="checkbox" value="Cotton" /> Cotton</label>
+                <label><input class="material-filter" type="checkbox" value="Denim" /> Denim</label>
+                <label><input class="material-filter" type="checkbox" value="Linen" /> Linen</label>
+                <label><input class="material-filter" type="checkbox" value="Silk" /> Silk</label>
+                <label><input class="material-filter" type="checkbox" value="Wool" /> Wool</label>
+                <label><input class="material-filter" type="checkbox" value="Leather" /> Leather</label>
+              </div>
+            </details>
+          </details>
+          <label class="sort-box">
+            Sort by
+            <select id="sortSelect">
+              <option value="newest">Newest first</option>
+              <option value="low-high">Low to high</option>
+              <option value="high-low">High to low</option>
+            </select>
+          </label>
         </div>
         <div class="product-grid" id="productGrid" aria-live="polite"></div>
       </section>
@@ -237,6 +312,7 @@
                 <option value="dresses">Dresses</option>
                 <option value="outerwear">Outerwear</option>
                 <option value="bottoms">Bottoms</option>
+                <option value="shoes">Shoes</option>
                 <option value="accessories">Accessories</option>
               </select>
             </label>
@@ -247,6 +323,10 @@
             <label>
               Size
               <input type="text" id="itemSize" placeholder="UK 10 / M" required />
+            </label>
+            <label>
+              Material
+              <input type="text" id="itemMaterial" placeholder="Cotton, denim, silk..." />
             </label>
             <label class="full">
               Image URL

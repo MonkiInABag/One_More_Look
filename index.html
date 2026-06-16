@@ -112,14 +112,7 @@
           </div>
         </div>
         <div class="hero-media">
-          <img
-            src="https://images.unsplash.com/photo-1595991209266-711c557ac7c4?w=900&h=1100&fit=crop&auto=format"
-            alt="Curated vintage clothing inside a boutique"
-          />
-          <div class="arrival-note">
-            <strong>New arrivals every Friday</strong>
-            <span>Free shipping on orders over GBP 50</span>
-          </div>
+          <div class="hero-slideshow" id="heroSlideshow" aria-live="polite"></div>
         </div>
       </section>
 
@@ -263,6 +256,7 @@
         <a href="about.html">About</a>
         <a href="how-it-works.html#how-it-works">How It Works</a>
         <a href="how-it-works.html#sell-with-us">Sell With Us</a>
+        <a href="learn-more.html">Learn More</a>
         <a href="contact.html">Contact</a>
       </nav>
     </footer>
@@ -295,6 +289,7 @@
         <div class="admin-toolbar">
           <button class="tab active" type="button" data-tab="stock">Stock</button>
           <button class="tab" type="button" data-tab="layout">Layout</button>
+          <button class="tab" type="button" data-tab="pages">Pages</button>
           <button class="tab" type="button" data-tab="links">Links</button>
         </div>
 
@@ -394,6 +389,40 @@
               <input type="url" id="settingEbay" placeholder="https://www.ebay.co.uk/..." />
             </label>
             <button class="button primary" type="submit">Save links</button>
+          </form>
+        </section>
+
+        <section class="admin-tab hidden" id="pagesTab">
+          <form class="settings-form" id="pagesForm">
+            <label>
+              Home page message
+              <textarea id="settingHomePage"></textarea>
+            </label>
+            <label>
+              About page message
+              <textarea id="settingAboutPage"></textarea>
+            </label>
+            <label>
+              Contact page message
+              <textarea id="settingContactPage"></textarea>
+            </label>
+            <label>
+              How it works message
+              <textarea id="settingHowPage"></textarea>
+            </label>
+            <label>
+              Sell with us message
+              <textarea id="settingSellPage"></textarea>
+            </label>
+            <label>
+              Learn more page message
+              <textarea id="settingLearnPage"></textarea>
+            </label>
+            <label>
+              Brands we love
+              <textarea id="settingBrands" placeholder="Add one brand per line"></textarea>
+            </label>
+            <button class="button primary" type="submit">Save page content</button>
           </form>
         </section>
 

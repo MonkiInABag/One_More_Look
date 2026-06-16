@@ -50,6 +50,15 @@ const defaultSettings = {
     "Hand-picked preloved pieces from Cheshire, lovingly checked, honestly described, and priced to find a new home. Because beautiful clothes deserve a second life.",
   about:
     "One More Look is built around careful resale: hand-picked pieces, regular drops, and styling that makes preloved clothing feel exciting again.",
+  contact:
+    "Use this page for buyer questions, seller enquiries, sizing help, delivery questions, or anything you want to ask One More Look.",
+  how:
+    "Browse honest preloved listings, or send in your own quality pieces for one more look. Both routes live here, with the same careful standard.",
+  sell:
+    "Send us your best preloved pieces and we will help them find another home. Payment details and seller accounts can be connected properly later.",
+  learn:
+    "Learn how One More Look checks, prices, lists, and sells preloved pieces with care. This page can be updated from the employee area whenever your process changes.",
+  brands: "Ralph Lauren\nLevi's\nZara\nNike\nAdidas\nMango\nH&M\nCarhartt",
   accent: "#c9a882",
   vinted: "#",
   ebay: "#",
@@ -93,6 +102,7 @@ const panelTitle = document.querySelector("#panelTitle");
 const stockForm = document.querySelector("#stockForm");
 const settingsForm = document.querySelector("#settingsForm");
 const linksForm = document.querySelector("#linksForm");
+const pagesForm = document.querySelector("#pagesForm");
 const basketPanel = document.querySelector("#basketPanel");
 const basketList = document.querySelector("#basketList");
 const basketCount = document.querySelector("#basketCount");
@@ -114,11 +124,14 @@ const productDetail = document.querySelector("#productDetail");
 const menuToggle = document.querySelector("#menuToggle");
 const siteNav = document.querySelector("#siteNav");
 const sortSelect = document.querySelector("#sortSelect");
+const heroSlideshow = document.querySelector("#heroSlideshow");
 let activeFilter = "all";
 let activeSort = "newest";
 const activeSizes = new Set();
 const activeMaterials = new Set();
 let uploadedGalleryImages = [];
+let heroSlideIndex = 0;
+let heroSlideTimer;
 
 function pounds(value) {
   return new Intl.NumberFormat("en-GB", {
@@ -172,6 +185,53 @@ function matchesSelectedMaterials(item) {
 
 function basketTotal() {
   return getBasketProducts().reduce((total, item) => total + Number(item.price), 0);
+}
+
+function renderHeroSlideshow() {
+  if (!heroSlideshow) {
+    return;
+  }
+
+  const products = store.products.filter((item) => item.image);
+
+  if (products.length === 0) {
+    heroSlideshow.innerHTML = `
+      <div class="hero-slide active">
+        <img src="https://images.unsplash.com/photo-1595991209266-711c557ac7c4?w=900&h=1100&fit=crop&auto=format" alt="Curated vintage clothing inside a boutique">
+        <div class="hero-slide-caption">
+          <strong>New arrivals every Friday</strong>
+          <span>Fresh preloved pieces coming soon</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  heroSlideIndex = Math.min(heroSlideIndex, products.length - 1);
+  heroSlideshow.innerHTML = products
+    .map(
+      (item, index) => `
+        <a class="hero-slide ${index === heroSlideIndex ? "active" : ""}" href="product.html?id=${encodeURIComponent(item.id)}">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+          <div class="hero-slide-caption">
+            <strong>${escapeHtml(item.name)}</strong>
+            <span>${pounds(item.price)} &middot; ${escapeHtml(item.size)}</span>
+          </div>
+        </a>
+      `,
+    )
+    .join("");
+
+  window.clearInterval(heroSlideTimer);
+  if (products.length > 1) {
+    heroSlideTimer = window.setInterval(() => {
+      const slides = [...heroSlideshow.querySelectorAll(".hero-slide")];
+      if (slides.length === 0) return;
+      slides[heroSlideIndex]?.classList.remove("active");
+      heroSlideIndex = (heroSlideIndex + 1) % slides.length;
+      slides[heroSlideIndex]?.classList.add("active");
+    }, 4200);
+  }
 }
 
 function renderProducts() {
@@ -341,15 +401,21 @@ function addToBasket(id) {
   store.basket = [...store.basket, id];
   renderProducts();
   renderBasket();
+  renderHeroSlideshow();
 }
 
 function removeFromBasket(id) {
   store.basket = store.basket.filter((itemId) => itemId !== id);
   renderProducts();
   renderBasket();
+  renderHeroSlideshow();
 }
 
 function renderStockList() {
+  if (!stockList) {
+    return;
+  }
+
   const products = store.products;
 
   if (products.length === 0) {
@@ -379,25 +445,54 @@ function renderStockList() {
 function applySettings() {
   const settings = store.settings;
   document.documentElement.style.setProperty("--accent", settings.accent);
-  const heroText = document.querySelector("#heroText");
-  const aboutText = document.querySelector("#aboutText");
   const vintedLink = document.querySelector("#vintedLink");
   const ebayLink = document.querySelector("#ebayLink");
-  const settingHero = document.querySelector("#settingHero");
-  const settingAbout = document.querySelector("#settingAbout");
-  const settingAccent = document.querySelector("#settingAccent");
-  const settingVinted = document.querySelector("#settingVinted");
-  const settingEbay = document.querySelector("#settingEbay");
 
-  if (heroText) heroText.textContent = settings.hero;
-  if (aboutText) aboutText.textContent = settings.about;
+  const setText = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  };
+
+  const setValue = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.value = value;
+  };
+
+  const brandsList = document.querySelector("#brandsList");
+
+  setText("#heroText", settings.hero);
+  setText("#aboutText", settings.about);
+  setText("#contactText", settings.contact);
+  setText("#howText", settings.how);
+  setText("#sellText", settings.sell);
+  setText("#learnText", settings.learn);
+
+  if (brandsList) {
+    const brands = String(settings.brands || "")
+      .split(/\r?\n/)
+      .map((brand) => brand.trim())
+      .filter(Boolean);
+
+    brandsList.innerHTML = brands.length
+      ? brands.map((brand) => `<span>${escapeHtml(brand)}</span>`).join("")
+      : `<p class="empty-state">No brands added yet.</p>`;
+  }
+
   if (vintedLink) vintedLink.href = settings.vinted || "#";
   if (ebayLink) ebayLink.href = settings.ebay || "#";
-  if (settingHero) settingHero.value = settings.hero;
-  if (settingAbout) settingAbout.value = settings.about;
-  if (settingAccent) settingAccent.value = settings.accent;
-  if (settingVinted) settingVinted.value = settings.vinted;
-  if (settingEbay) settingEbay.value = settings.ebay;
+
+  setValue("#settingHero", settings.hero);
+  setValue("#settingAbout", settings.about);
+  setValue("#settingAccent", settings.accent);
+  setValue("#settingVinted", settings.vinted);
+  setValue("#settingEbay", settings.ebay);
+  setValue("#settingHomePage", settings.hero);
+  setValue("#settingAboutPage", settings.about);
+  setValue("#settingContactPage", settings.contact);
+  setValue("#settingHowPage", settings.how);
+  setValue("#settingSellPage", settings.sell);
+  setValue("#settingLearnPage", settings.learn);
+  setValue("#settingBrands", settings.brands);
 }
 
 function syncAdminState() {
@@ -687,6 +782,7 @@ stockForm?.addEventListener("submit", (event) => {
 
   resetStockForm();
   renderProducts();
+  renderHeroSlideshow();
   renderStockList();
 });
 
@@ -708,6 +804,7 @@ stockList?.addEventListener("click", (event) => {
     renderProducts();
     renderStockList();
     renderBasket();
+    renderHeroSlideshow();
   }
 });
 
@@ -783,6 +880,21 @@ linksForm?.addEventListener("submit", (event) => {
   applySettings();
 });
 
+pagesForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  store.settings = {
+    ...store.settings,
+    hero: document.querySelector("#settingHomePage").value.trim(),
+    about: document.querySelector("#settingAboutPage").value.trim(),
+    contact: document.querySelector("#settingContactPage").value.trim(),
+    how: document.querySelector("#settingHowPage").value.trim(),
+    sell: document.querySelector("#settingSellPage").value.trim(),
+    learn: document.querySelector("#settingLearnPage").value.trim(),
+    brands: document.querySelector("#settingBrands").value.trim(),
+  };
+  applySettings();
+});
+
 checkoutForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   const basketProducts = getBasketProducts();
@@ -803,6 +915,7 @@ checkoutForm?.addEventListener("submit", (event) => {
 applySettings();
 renderProducts();
 renderBasket();
+renderHeroSlideshow();
 renderProductDetail();
 renderAdminPreview();
 syncAdminState();

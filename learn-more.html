@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Contact | One More Look</title>
+    <title>Learn More | One More Look</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -40,47 +40,47 @@
     <main>
       <section class="page-hero">
         <div class="page-hero-copy">
-          <p class="eyebrow">Contact</p>
-          <h1>Questions, collabs, selling, <em>or order help.</em></h1>
-          <p id="contactText">
-            Use this page for buyer questions, seller enquiries, sizing help, delivery questions,
-            or anything you want to ask One More Look.
+          <p class="eyebrow">Learn More</p>
+          <h1>Give good clothes <em>one more look.</em></h1>
+          <p id="learnText">
+            Learn how One More Look checks, prices, lists, and sells preloved pieces with care.
+            This page can be updated from the employee area whenever your process changes.
           </p>
+          <div class="hero-actions">
+            <a class="button secondary" href="how-it-works.html#sell-with-us">Back to Sell With Us</a>
+          </div>
         </div>
         <img
-          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&h=900&fit=crop&auto=format"
-          alt="Clothing shop interior"
+          src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=900&h=900&fit=crop&auto=format"
+          alt="Clothes hanging on a rail"
         />
       </section>
 
       <section class="page-section">
-        <form class="contact-card">
-          <label>
-            Name
-            <input type="text" required />
-          </label>
-          <label>
-            Email
-            <input type="email" required />
-          </label>
-          <label>
-            Enquiry type
-            <select>
-              <option>Buying an item</option>
-              <option>Selling clothes</option>
-              <option>Order help</option>
-              <option>Other</option>
-            </select>
-          </label>
-          <label>
-            Message
-            <textarea required></textarea>
-          </label>
-          <button class="button primary" type="submit">Send message</button>
-          <p class="form-note">
-            This form is ready visually. We can connect it to email or a database later.
-          </p>
-        </form>
+        <div class="content-grid">
+          <article class="content-panel">
+            <strong>Checked</strong>
+            <p>Each item is reviewed for condition, fabric, fit, marks, and details before listing.</p>
+          </article>
+          <article class="content-panel">
+            <strong>Listed</strong>
+            <p>Photos, notes, measurements, and prices are added so buyers know what they are getting.</p>
+          </article>
+          <article class="content-panel">
+            <strong>Rehomed</strong>
+            <p>Pieces are packed carefully and sent to their next wardrobe once checkout is complete.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section brands-section" aria-labelledby="brands-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Curated Picks</p>
+            <h2 id="brands-title">Brands We Love</h2>
+          </div>
+        </div>
+        <div class="brand-list" id="brandsList" aria-live="polite"></div>
       </section>
     </main>
 
@@ -94,7 +94,7 @@
         <a href="about.html">About</a>
         <a href="how-it-works.html#how-it-works">How It Works</a>
         <a href="how-it-works.html#sell-with-us">Sell With Us</a>
-        <a href="learn-more.html">Learn More</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </footer>
 

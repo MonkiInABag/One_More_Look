@@ -7,7 +7,7 @@ const defaultProducts = [
     size: "M",
     image:
       "https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=600&h=750&fit=crop&auto=format",
-    material: "Linen",
+    colour: "Beige",
     notes: "Like new condition. Soft tailoring, easy to dress up or down.",
   },
   {
@@ -18,7 +18,7 @@ const defaultProducts = [
     size: "S",
     image:
       "https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?w=600&h=750&fit=crop&auto=format",
-    material: "Silk",
+    colour: "Red",
     notes: "Excellent condition with a fluid fit and deep seasonal colour.",
   },
   {
@@ -29,7 +29,7 @@ const defaultProducts = [
     size: "L",
     image:
       "https://images.unsplash.com/photo-1637228393246-c38a4b3d2011?w=600&h=750&fit=crop&auto=format",
-    material: "Denim",
+    colour: "Blue",
     notes: "Good preloved condition with relaxed fading and a classic cut.",
   },
   {
@@ -40,7 +40,7 @@ const defaultProducts = [
     size: "XS",
     image:
       "https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?w=600&h=750&fit=crop&auto=format",
-    material: "Wool",
+    colour: "Cream",
     notes: "Like new knitwear, soft against the skin and ideal for layering.",
   },
 ];
@@ -128,7 +128,7 @@ const heroSlideshow = document.querySelector("#heroSlideshow");
 let activeFilter = "all";
 let activeSort = "newest";
 const activeSizes = new Set();
-const activeMaterials = new Set();
+const activeColours = new Set();
 let uploadedGalleryImages = [];
 let heroSlideIndex = 0;
 let heroSlideTimer;
@@ -171,16 +171,20 @@ function matchesSelectedSizes(item) {
   }
 
   const itemSize = String(item.size || "").toLowerCase();
-  return [...activeSizes].some((size) => itemSize.includes(size.toLowerCase()));
+  const compactItemSize = itemSize.replace(/\s+/g, "");
+  return [...activeSizes].some((size) => {
+    const selectedSize = size.toLowerCase();
+    return itemSize.includes(selectedSize) || compactItemSize.includes(selectedSize);
+  });
 }
 
-function matchesSelectedMaterials(item) {
-  if (activeMaterials.size === 0) {
+function matchesSelectedColours(item) {
+  if (activeColours.size === 0) {
     return true;
   }
 
-  const material = String(item.material || "").toLowerCase();
-  return [...activeMaterials].some((selected) => material.includes(selected.toLowerCase()));
+  const colour = String(item.colour || "").toLowerCase();
+  return [...activeColours].some((selected) => colour.includes(selected.toLowerCase()));
 }
 
 function basketTotal() {
@@ -245,7 +249,7 @@ function renderProducts() {
     activeFilter === "all" ? products : products.filter((item) => item.category === activeFilter);
 
   visibleProducts = visibleProducts.filter(matchesSelectedSizes);
-  visibleProducts = visibleProducts.filter(matchesSelectedMaterials);
+  visibleProducts = visibleProducts.filter(matchesSelectedColours);
 
   visibleProducts = [...visibleProducts].sort((a, b) => {
     if (activeSort === "low-high") return Number(a.price) - Number(b.price);
@@ -276,7 +280,7 @@ function renderProducts() {
                 <span class="price">${pounds(item.price)}</span>
               </div>
               <span class="pill">${escapeHtml(item.size)}</span>
-              ${item.material ? `<span class="pill">${escapeHtml(item.material)}</span>` : ""}
+              ${item.colour ? `<span class="pill">${escapeHtml(item.colour)}</span>` : ""}
               <p>${escapeHtml(item.notes)}</p>
             </div>
           </a>
@@ -327,7 +331,7 @@ function renderProductDetail() {
       <h1>${escapeHtml(item.name)}</h1>
       <p class="detail-price">${pounds(item.price)}</p>
       <span class="pill">${escapeHtml(item.size)}</span>
-      ${item.material ? `<span class="pill">${escapeHtml(item.material)}</span>` : ""}
+      ${item.colour ? `<span class="pill">${escapeHtml(item.colour)}</span>` : ""}
       <p>${escapeHtml(item.notes)}</p>
       <button class="button primary" type="button" data-detail-add="${escapeHtml(item.id)}">
         ${store.basket.includes(item.id) ? "In basket" : "Add to basket"}
@@ -528,7 +532,7 @@ function fillStockForm(item) {
   document.querySelector("#itemCategory").value = item.category;
   document.querySelector("#itemPrice").value = item.price;
   document.querySelector("#itemSize").value = item.size;
-  document.querySelector("#itemMaterial").value = item.material || "";
+  document.querySelector("#itemColour").value = item.colour || "";
   document.querySelector("#itemImage").value = item.image;
   document.querySelector("#itemExtraImages").value = (item.images || []).join("\n");
   document.querySelector("#itemNotes").value = item.notes;
@@ -586,7 +590,7 @@ function renderAdminPreview() {
   const name = document.querySelector("#itemName")?.value.trim() || "Item preview";
   const price = Number(document.querySelector("#itemPrice")?.value || 0);
   const size = document.querySelector("#itemSize")?.value.trim() || "Size";
-  const material = document.querySelector("#itemMaterial")?.value.trim();
+  const colour = document.querySelector("#itemColour")?.value.trim();
   const notes = document.querySelector("#itemNotes")?.value.trim() || "Condition and item notes will preview here.";
   const image = itemImageInput?.value.trim();
 
@@ -600,7 +604,7 @@ function renderAdminPreview() {
           <span class="price">${price ? pounds(price) : "GBP 0"}</span>
         </div>
         <span class="pill">${escapeHtml(size)}</span>
-        ${material ? `<span class="pill">${escapeHtml(material)}</span>` : ""}
+        ${colour ? `<span class="pill">${escapeHtml(colour)}</span>` : ""}
         <p>${escapeHtml(notes)}</p>
       </div>
     </div>
@@ -704,12 +708,12 @@ document.querySelectorAll(".size-filter").forEach((checkbox) => {
   });
 });
 
-document.querySelectorAll(".material-filter").forEach((checkbox) => {
+document.querySelectorAll(".colour-filter").forEach((checkbox) => {
   checkbox.addEventListener("change", () => {
     if (checkbox.checked) {
-      activeMaterials.add(checkbox.value);
+      activeColours.add(checkbox.value);
     } else {
-      activeMaterials.delete(checkbox.value);
+      activeColours.delete(checkbox.value);
     }
     renderProducts();
   });
@@ -769,7 +773,7 @@ stockForm?.addEventListener("submit", (event) => {
     category: document.querySelector("#itemCategory").value,
     price: Number(document.querySelector("#itemPrice").value),
     size: document.querySelector("#itemSize").value.trim(),
-    material: document.querySelector("#itemMaterial").value.trim(),
+    colour: document.querySelector("#itemColour").value.trim(),
     image: document.querySelector("#itemImage").value.trim(),
     images: [...getExtraImageUrls(), ...uploadedGalleryImages],
     notes: document.querySelector("#itemNotes").value.trim(),
